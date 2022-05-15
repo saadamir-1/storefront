@@ -1,0 +1,1 @@
+python inference_btt_2020.py --data_path /home/saad/Project/Test_Data/ --shapefiles /home/saad/Project/District_Shapefiles --topology ENC_4_DEC_4 --bands 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 --classes Non-Forest Forest --model /home/saad/Project/Data/save_dir/model_99.pt --destination /home/saad/Project/Inference --batch_size 4 --cuda 1 --device 0
