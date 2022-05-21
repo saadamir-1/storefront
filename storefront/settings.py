@@ -25,7 +25,7 @@ SECRET_KEY = 'zzpt@1-z)ln9_&z4r%7*&1kp&)#_=x(99mrzj(zmvs2+9qc1=0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["52.90.89.162"]
 
 
 # Application definition
@@ -54,6 +54,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://52.90.89.162",
+    "http://52.90.89.162:8000",
+    "52.90.89.162",
 ]
 
 ROOT_URLCONF = 'storefront.urls'

@@ -12,15 +12,15 @@ from PIL import Image
 # action ( views is alse called action in some frameworks)
 class Arguments:
     def __init__(self):
-        self.data_path = '/home/saad/Project/Test_Data/'
-        self.rasterized_shapefiles_path = '/home/saad/Project/District_Shapefiles' 
+        self.data_path = '/mnt/efs/fs1/test_data'
+        self.rasterized_shapefiles_path = '/mnt/efs/fs1/test_data' 
         self.model_topology = 'ENC_4_DEC_4' 
         self.bands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] 
         self.classes = ['Non-Forest', 'Forest'] 
-        self.model_path = '/home/saad/Project/Data/save_dir/model_99.pt' 
-        self.dest = '/home/saad/Project/Inference'
+        self.model_path = '/mnt/efs/fs1/test_data/model_99.pt' 
+        self.dest = '/mnt/efs/fs1/test_data'
         self.bs = 4 
-        self.cuda = 1
+        self.cuda = 0
         self.device = 0
 
 
@@ -31,19 +31,17 @@ def inference(request, startYear, endYear, region):
         year_our = [startYear]
     else:
         year_our = [startYear, endYear]
-    place = ox.graph_from_bbox(25.65,25.55,85.26,85.01, network_type = 'drive')
-    place_projected = ox.project_graph(place)
+   # place = ox.graph_from_bbox(25.65,25.55,85.26,85.01, network_type = 'drive')
+   # place_projected = ox.project_graph(place)
     # ox.plot_graph(place_projected)
-    ox.save_graph_shapefile(place_projected, filepath = 'playground/shapefiles')
+   # ox.save_graph_shapefile(place_projected, filepath = 'playground/shapefiles')
     region_our = [region]
     inference_btt_2020.run_inference(args_better, year_our, region_our)
-    imagePath = '/home/saad/Project/Inference/abbottabad_2014_inferred_map.png'
+    imagePath = '/mnt/efs/fs1/test_data/abbottabad_2014_inferred_map.png'
     try:
         with open(imagePath, "rb") as f:
             encoded_string = base64.b64encode(f.read())
-            print(encoded_string)
             return HttpResponse(encoded_string, content_type="image/png")
-
     except IOError:
         red = Image.new('RGBA', (50, 50), (255,0,0,0))
         response = HttpResponse(content_type="image/png")

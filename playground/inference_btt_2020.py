@@ -145,7 +145,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             return self.shape
 
         def clear_mem(self):
-            shutil.rmtree(self.temp_dir)
+            shutil.rmtree(self.temp_dir, ignore_errors=True)
             print('Log: Temporary memory cleared')
 
     ######################################################################################
@@ -162,7 +162,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
 @torch.no_grad()
 def run_inference(args,x,y):
     model = UNet(topology=args.model_topology, input_channels=len(args.bands), num_classes=len(args.classes))
-    model.load_state_dict(torch.load(args.model_path), strict=False)  # map_location='cpu'), strict=False)
+    model.load_state_dict(torch.load(args.model_path, map_location=torch.device('cpu')), strict=False)  # map_location='cpu'), strict=False)
     print('Log: Loaded pretrained {}'.format(args.model_path))
     model.eval()
     if args.cuda:
