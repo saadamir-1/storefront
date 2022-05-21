@@ -84,7 +84,11 @@ def run_project(request, startYear, endYear, region):
 
     region_our = [region]
     inference_btt_2020.run_inference(args, year_our, region_our)
+    print("\n==> INFERENCE COMLETE")
+
     if startYear != endYear:
+        print("\n==> RUNNING COMPARISON")
+
         comparison(startYear, endYear, region)
         imagePath = '/home/saad/django_projects/playground/inference_results/' + startYear + '_' + endYear+'_region_comparison.png'
         try:
