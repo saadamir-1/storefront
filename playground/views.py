@@ -23,18 +23,12 @@ class Arguments:
         self.cuda = 1
         self.device = 0
 
-
-
 def inference(request, startYear, endYear, region):
     args_better = Arguments()
     if startYear == endYear:
         year_our = [startYear]
     else:
         year_our = [startYear, endYear]
-    place = ox.graph_from_bbox(25.65,25.55,85.26,85.01, network_type = 'drive')
-    place_projected = ox.project_graph(place)
-    # ox.plot_graph(place_projected)
-    ox.save_graph_shapefile(place_projected, filepath = 'playground/shapefiles')
     region_our = [region]
     inference_btt_2020.run_inference(args_better, year_our, region_our)
     imagePath = '/home/saad/Project/Inference/abbottabad_2014_inferred_map.png'
