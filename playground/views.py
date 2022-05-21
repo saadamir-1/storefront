@@ -3,43 +3,115 @@ from fileinput import filename
 import osmnx as ox
 from django.shortcuts import render
 from django.http import HttpResponse
+from playground import comparison
+from playground.bounding_box import findBBox
+from playground.convert import shpToRaster
+from playground.edit_scene import editTxt
+from playground.m2m import run_m2m
+from playground.pysh import shapeFileDownload
+from playground.search_landsat_image import searchImage
+from playground.stack import stack
 from . import inference_btt_2020
 from PIL import Image
-
 # Create your views here.
 # request -> response
 # request handler
 # action ( views is alse called action in some frameworks)
 class Arguments:
     def __init__(self):
-        self.data_path = '/home/saad/Project/Test_Data/'
-        self.rasterized_shapefiles_path = '/home/saad/Project/District_Shapefiles' 
+        self.data_path = '/home/saad/django_projects/'
+        self.rasterized_shapefiles_path = '/home/saad/django_projects/shapefiles' 
         self.model_topology = 'ENC_4_DEC_4' 
         self.bands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] 
         self.classes = ['Non-Forest', 'Forest'] 
         self.model_path = '/home/saad/Project/Data/save_dir/model_99.pt' 
-        self.dest = '/home/saad/Project/Inference'
+        self.dest = '/home/saad/django_projects/playground/inference_results'
         self.bs = 4 
-        self.cuda = 1
+        self.cuda = 0
         self.device = 0
 
-def inference(request, startYear, endYear, region):
-    args_better = Arguments()
+class Arguments_m2m:
+    def __init__(self):
+        self.user = 'ziayanj'
+        self.passw = 'fyp.forest.123' 
+        self.file = 'none'
+
+def run_project(request, startYear, endYear, region):
+
+    args = Arguments()
+    args_downloading = Arguments_m2m() 
+
     if startYear == endYear:
         year_our = [startYear]
     else:
         year_our = [startYear, endYear]
-    region_our = [region]
-    inference_btt_2020.run_inference(args_better, year_our, region_our)
-    imagePath = '/home/saad/Project/Inference/abbottabad_2014_inferred_map.png'
-    try:
-        with open(imagePath, "rb") as f:
-            encoded_string = base64.b64encode(f.read())
-            print(encoded_string)
-            return HttpResponse(encoded_string, content_type="image/png")
+    
+    print("\n**************************************\n")
+    print("-----------> Activity Log <-----------")
+    print("\n**************************************\n")
+    print("\n==> Downloading ShapeFiles")
 
-    except IOError:
-        red = Image.new('RGBA', (50, 50), (255,0,0,0))
-        response = HttpResponse(content_type="image/png")
-        red.save(response, "png")
-        return response
+    shapeFileDownload(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709, region)
+
+    print("\n==> Downloading Complete")
+    print("\n==> Creating bounding box")
+
+    bbox1 = findBBox(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709)
+
+    print("\n==> Bounding box created")
+    print("\n==> Searching for Landsat8 Images")
+
+    image_names = searchImage(bbox1, year_our)
+
+    print("\n==> Search completed for Landsat8 Images\n")
+    count = 0
+    print(image_names) 
+    for x in image_names:
+        print("==> Editing scenes file for" + x +"\n")
+        editTxt(x)
+        run_m2m(args_downloading)
+        if count == 0:
+            stack(x, startYear, region)
+            count+=count
+        elif count == 1:
+            stack(x, endYear, region)
+    
+    print("\n==> Converting Shapefile")
+    shpToRaster(startYear, region)
+
+    #Inference
+    print("\n==> RUNNING INFERENCE")
+
+    region_our = [region]
+    inference_btt_2020.run_inference(args, year_our, region_our)
+    if startYear != endYear:
+        comparison(startYear, endYear, region)
+        imagePath = '/home/saad/django_projects/playground/inference_results/' + startYear + '_' + endYear+'_region_comparison.png'
+        try:
+            with open(imagePath, "rb") as f:
+                encoded_string = base64.b64encode(f.read())
+                print(encoded_string)
+                return HttpResponse(encoded_string, content_type="image/png")
+
+        except IOError:
+            red = Image.new('RGBA', (50, 50), (255,0,0,0))
+            response = HttpResponse(content_type="image/png")
+            red.save(response, "png")
+            return response
+    else:
+        imagePath = '/home/saad/django_projects/playground/inference_results/' + region + '_' + startYear +'_inferred_map.png'
+        try:
+            with open(imagePath, "rb") as f:
+                encoded_string = base64.b64encode(f.read())
+                print(encoded_string)
+                return HttpResponse(encoded_string, content_type="image/png")
+
+        except IOError:
+            red = Image.new('RGBA', (50, 50), (255,0,0,0))
+            response = HttpResponse(content_type="image/png")
+            red.save(response, "png")
+            return response
+# startYear = 2018
+# endYear = 2019
+# region = 'abbottabad'
+# run_project(startYear, endYear, region)

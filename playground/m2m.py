@@ -14,7 +14,7 @@ import re
 import threading
 import datetime
 
-path = "" # Fill a valid download path
+path = "./downloaded_image" # Fill a valid download path
 maxthreads = 5 # Threads count for downloads
 sema = threading.Semaphore(value=maxthreads)
 label = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") # Customized label using date time
@@ -277,8 +277,8 @@ class Arguments_m2m:
         self.file = 'none'
 
 def main():
-    args_better = Arguments_m2m() 
-    run_m2m(args_better)
+    args_better_download = Arguments_m2m() 
+    run_m2m(args_better_download)
 
 if __name__ == '__main__':     
     main()

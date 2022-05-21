@@ -1,11 +1,11 @@
 from osgeo import ogr, gdal
 import subprocess
 
-def shpToRaster():
-    InputVector = './shapefiles/contextwriter.shp'
-    OutputImage = './landsat_image/Result.tif'
+def shpToRaster(year, region):
+    InputVector = './shapefiles/' + region + '_shapefile.shp'
+    OutputImage = './shapefiles/' + region + '_shapefile.tif'
 
-    RefImage = './landsat_image/stack.tif'
+    RefImage = 'landsat8_' + str(year) + '_region_' + region + '.tif'
 
     gdalformat = 'GTiff'
     datatype = gdal.GDT_Byte
@@ -38,3 +38,5 @@ def shpToRaster():
 # Build image overviews
     subprocess.call("gdaladdo --config COMPRESS_OVERVIEW DEFLATE "+OutputImage+" 2 4 8 16 32 64", shell=True)
     print("Done.")
+
+# shpToRaster(2014, 'multan')
