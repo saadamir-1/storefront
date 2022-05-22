@@ -4,7 +4,7 @@ from django.conf import settings
 
 # from storefront.settings import BASE_DIR
 
-def stack(nameLandsat, year, region):
+def stack(nameLandsat, data_path, image_name):
     
     bands_list = ['1','2','3','4','5','6','7','8','9','10','11']
     file_list = []
@@ -32,16 +32,15 @@ def stack(nameLandsat, year, region):
     # file_name = '/playground/downloaded_image/' + file_list[0]
     # print(settings.BASE_DIR)
     # with rasterio.open(os.path.join(settings.BASE_DIR, file_name)) as src0:
-    file_path = '/mnt/efs/fs1/proj/storefront/downloaded_image/' + file_list[0]
+    file_path = data_path + file_list[0]
     with rasterio.open(file_path) as src0:
         meta = src0.meta
     # Update meta to reflect the number of layers
     meta.update(count = len(file_list))
 
     # # Read each layer and write it to stack
-    file_path = '/mnt/efs/fs1/proj/storefront/downloaded_image/'
-    regionName = 'landsat8_' + str(year) + '_region_' + region + '.tif'
-    with rasterio.open(regionName, 'w', **meta) as dst:
+    file_path = data_path
+    with rasterio.open(image_name, 'w', **meta) as dst:
         for id, layer in enumerate(file_list, start=1):
             # with rasterio.open(os.path.join(settings.BASE_DIR, layer)) as src1:
             with rasterio.open(file_path + layer) as src1:

@@ -5,7 +5,7 @@ def shpToRaster(year, region):
     InputVector = './shapefiles/' + region + '_shapefile.shp'
     OutputImage = './shapefiles/' + region + '_shapefile.tif'
 
-    RefImage = 'landsat8_' + str(year) + '_region_' + region + '.tif'
+    RefImage = 'clipped_landsat8_' + str(year) + '_region_' + region + '.tif'
 
     gdalformat = 'GTiff'
     datatype = gdal.GDT_Byte

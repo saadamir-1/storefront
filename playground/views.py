@@ -13,6 +13,7 @@ from playground.search_landsat_image import searchImage
 from playground.stack import stack
 from . import inference_btt_2020
 from PIL import Image
+from playground.clip import clip_landsat
 # Create your views here.
 # request -> response
 # request handler
@@ -136,7 +137,7 @@ def run_project_map(request, startYear, endYear, region, a1, a2, b1, b2, c1, c2,
     print("\n**************************************\n")
     print("\n==> Downloading ShapeFiles")
 
-    shapeFileDownload(a1, a2, b1, b2, c1, c2, d1, d2, region)
+    shapeFileDownload(a1, a2, b1, b2, c1, c2, d1, d2, region) # /mnt/efs/fs1/proj/storefront/shapefiles
 
     print("\n==> Downloading Complete")
     print("\n==> Creating bounding box")
@@ -154,12 +155,24 @@ def run_project_map(request, startYear, endYear, region, a1, a2, b1, b2, c1, c2,
     for x in image_names:
        print("==> Editing scenes file for" + x +"\n")
        editTxt(x)
-       run_m2m(args_downloading)
+       run_m2m(args_downloading) #/mnt/efs/fs1/proj/storefront/shapefiles
        if count == 0:
-           stack(x, startYear, region)
+           data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
+           image_name = 'landsat8_' + str(startYear) + '_region_' + region + '.tif'
+           stack(x, data_path, image_name)
+           clip_landsat(x, region)
+           data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
+           image_name = 'clipped_landsat8_' + str(startYear) + '_region_' + region + '.tif'
+           stack(x, data_path, image_name)
            count+=count
        elif count == 1:
-           stack(x, endYear, region)
+           data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
+           image_name = 'landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           stack(x, data_path, image_name)
+           clip_landsat(x, region)
+           data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
+           image_name = 'clipped_landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           stack(x, data_path, image_name)
     
     print("\n==> Converting Shapefile")
     shpToRaster(startYear, region)
