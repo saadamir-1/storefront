@@ -2,7 +2,7 @@ from matplotlib.image import imread
 from PIL import Image
 import numpy as np
 
-def comparison(year_one, year_two, region):
+def comparisons(year_one, year_two, region):
     first = imread('/mnt/efs/fs1/proj/storefront/playground/inference_results/' + region + '_' + year_one +'_inferred_map.png')
     second = imread('/mnt/efs/fs1/proj/storefront/playground/inference_results/' + region + '_' + year_two +'_inferred_map.png')
 
