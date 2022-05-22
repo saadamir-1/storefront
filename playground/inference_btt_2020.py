@@ -145,7 +145,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             return self.shape
 
         def clear_mem(self):
-            shutil.rmtree(self.temp_dir, ignore_errors=True)
+            shutil.rmtree(self.temp_dir)
             print('Log: Temporary memory cleared')
 
     ######################################################################################
