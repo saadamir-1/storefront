@@ -23,6 +23,7 @@ from playground.loss import FocalLoss2d
 from playground.model import UNet
 import PIL.Image as Im
 import stat
+import subprocess
 
 
 FOREST_LABEL, NON_FOREST_LABEL, NULL_LABEL = 1, 2, 0
@@ -149,7 +150,13 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             return self.shape
 
         def clear_mem(self):
-            shutil.rmtree(self.temp_dir, onerror=rm_dir_readonly)
+            # shutil.rmtree(self.temp_dir, onerror=rm_dir_readonly)
+
+            bashCommand = "sudo rm -r temp_numpy_saves"
+            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
+            print(output)
+
             print('Log: Temporary memory cleared')
 
     ######################################################################################
