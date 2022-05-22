@@ -174,11 +174,17 @@ def run_project_map(request, startYear, endYear, region, a1, a2, b1, b2, c1, c2,
        elif count == 1:
            data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
            image_name = 'landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           print("\n==> Starting Stack original file")
            stack(x, data_path, image_name)
+           print("\n==> Stack completed")
+           print("\n==> clipping landsat")
            clip_landsat(x, region)
+           print("\n==> clipping landsat complete")
            data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
            image_name = 'clipped_landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           print("\n==> stacking clipped landsat")
            stack(x, data_path, image_name)
+           print("\n==> clipped landsat stacked")
     
     print("\n==> Converting Shapefile")
     shpToRaster(startYear, region)
