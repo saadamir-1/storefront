@@ -152,7 +152,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
         def clear_mem(self):
             # shutil.rmtree(self.temp_dir, onerror=rm_dir_readonly)
 
-            bashCommand = "sudo rm -r temp_numpy_saves"
+            bashCommand = "sudo rm -rf /mnt/efs/fs1/proj/storefront/temp_numpy_saves"
             process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
             print(output)
