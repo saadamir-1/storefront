@@ -3,7 +3,7 @@ import os
 from playground.convert import shpToRaster
 from playground.inference_btt_2020 import run_inference
 
-from stack import stack
+from playground.stack import stack
 
 def clip_landsat(nameLandsat, region):
 
