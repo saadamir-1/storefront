@@ -137,57 +137,57 @@ def run_project_map(request, startYear, endYear, region, a1, a2, b1, b2, c1, c2,
     print("\n**************************************\n")
     print("\n==> Downloading ShapeFiles")
 
-    # shapeFileDownload(a1, a2, b1, b2, c1, c2, d1, d2, region) # /mnt/efs/fs1/proj/storefront/shapefiles
+    shapeFileDownload(a1, a2, b1, b2, c1, c2, d1, d2, region) # /mnt/efs/fs1/proj/storefront/shapefiles
 
-    # print("\n==> Downloading Complete")
-    # print("\n==> Creating bounding box")
+    print("\n==> Downloading Complete")
+    print("\n==> Creating bounding box")
 
-    # bbox1 = findBBox(a1, a2, b1, b2, c1, c2, d1, d2)
+    bbox1 = findBBox(a1, a2, b1, b2, c1, c2, d1, d2)
 
-    # print("\n==> Bounding box created")
-    # print("\n==> Searching for Landsat8 Images")
+    print("\n==> Bounding box created")
+    print("\n==> Searching for Landsat8 Images")
 
-    # image_names = searchImage(bbox1, year_our)
+    image_names = searchImage(bbox1, year_our)
 
-    # print("\n==> Search completed for Landsat8 Images\n")
-    # count = 0
-    # print(image_names) 
-    # for x in image_names:
-    #    print("==> Editing scenes file for" + x +"\n")
-    #    editTxt(x)
-    #    run_m2m(args_downloading) #/mnt/efs/fs1/proj/storefront/shapefiles
-    #    if count == 0:
-    #        data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
-    #        image_name = 'landsat8_' + str(startYear) + '_region_' + region + '.tif'
-    #        print("\n==> Starting Stack original file")
-    #        stack(x, data_path, image_name)
-    #        print("\n==> Stack completed")
-    #        print("\n==> clipping landsat")
-    #        clip_landsat(x, region)
-    #        print("\n==> clipping landsat complete")
-    #        data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
-    #        image_name = 'clipped_landsat8_' + str(startYear) + '_region_' + region + '.tif'
-    #        print("\n==> stacking clipped landsat")
-    #        stack(x, data_path, image_name)
-    #        print("\n==> clipped landsat stacked")
-    #        count+=count
-    #    elif count == 1:
-    #        data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
-    #        image_name = 'landsat8_' + str(endYear) + '_region_' + region + '.tif'
-    #        print("\n==> Starting Stack original file")
-    #        stack(x, data_path, image_name)
-    #        print("\n==> Stack completed")
-    #        print("\n==> clipping landsat")
-    #        clip_landsat(x, region)
-    #        print("\n==> clipping landsat complete")
-    #        data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
-    #        image_name = 'clipped_landsat8_' + str(endYear) + '_region_' + region + '.tif'
-    #        print("\n==> stacking clipped landsat")
-    #        stack(x, data_path, image_name)
-    #        print("\n==> clipped landsat stacked")
+    print("\n==> Search completed for Landsat8 Images\n")
+    count = 0
+    print(image_names) 
+    for x in image_names:
+       print("==> Editing scenes file for" + x +"\n")
+       editTxt(x)
+       run_m2m(args_downloading) #/mnt/efs/fs1/proj/storefront/shapefiles
+       if count == 0:
+           data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
+           image_name = 'landsat8_' + str(startYear) + '_region_' + region + '.tif'
+           print("\n==> Starting Stack original file")
+           stack(x, data_path, image_name)
+           print("\n==> Stack completed")
+           print("\n==> clipping landsat")
+           clip_landsat(x, region)
+           print("\n==> clipping landsat complete")
+           data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
+           image_name = 'clipped_landsat8_' + str(startYear) + '_region_' + region + '.tif'
+           print("\n==> stacking clipped landsat")
+           stack(x, data_path, image_name)
+           print("\n==> clipped landsat stacked")
+           count+=count
+       elif count == 1:
+           data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
+           image_name = 'landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           print("\n==> Starting Stack original file")
+           stack(x, data_path, image_name)
+           print("\n==> Stack completed")
+           print("\n==> clipping landsat")
+           clip_landsat(x, region)
+           print("\n==> clipping landsat complete")
+           data_path = '/mnt/efs/fs1/proj/storefront/clipped/'
+           image_name = 'clipped_landsat8_' + str(endYear) + '_region_' + region + '.tif'
+           print("\n==> stacking clipped landsat")
+           stack(x, data_path, image_name)
+           print("\n==> clipped landsat stacked")
     
-    # print("\n==> Converting Shapefile")
-    # shpToRaster(startYear, region)
+    print("\n==> Converting Shapefile")
+    shpToRaster(startYear, region)
 
     #Inference
     print("\n==> RUNNING INFERENCE")
