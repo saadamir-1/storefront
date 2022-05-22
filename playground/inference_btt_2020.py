@@ -89,9 +89,8 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             self.transformation = transformation
             self.temp_dir = 'temp_numpy_saves'
             if os.path.exists(self.temp_dir):
-                print("hahah")
-                # shutil.rmtree(self.temp_dir)
-            # os.mkdir(self.temp_dir)
+                shutil.rmtree(self.temp_dir)
+            os.mkdir(self.temp_dir)
             print('LOG: Generating data map now...')
             image_ds = gdal.Open(image_path, gdal.GA_ReadOnly)
             all_raster_bands = [image_ds.GetRasterBand(x).ReadAsArray() for x in range(1, 12)]
@@ -214,7 +213,7 @@ def run_inference(args,x,y):
             # save_path = os.path.join(args.dest, 'generated_map_{}_{}.npy'.format(district, year))
             # np.save(save_path, generated_map)
             #########################################################################################3
-            # inference_loader.dataset.clear_mem()
+            inference_loader.dataset.clear_mem()
             pass
         pass
     pass
