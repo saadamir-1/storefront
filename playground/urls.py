@@ -14,5 +14,5 @@ register_converter(FloatUrlParameterConverter, 'float')
 
 urlpatterns = [
     path('hello/<str:startYear>/<str:endYear>/<str:region>', views.run_project),
-    path('map/<str:startYear>/<str:endYear>/<str:region>/<float:a1>/<float:a2>/<float:b2>/<float:c1>/<float:c2>/<float:d1>/<float:d2>/', views.run_project_map)
+    path('map/<str:startYear>/<str:endYear>/<str:region>/<float:a1>/<float:a2>/<float:b1>/<float:b2>/<float:c1>/<float:c2>/<float:d1>/<float:d2>/', views.run_project_map)
 ]
