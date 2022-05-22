@@ -14,7 +14,7 @@ import re
 import threading
 import datetime
 
-path = "./downloaded_images" # Fill a valid download path
+path = "./downloaded_image" # Fill a valid download path
 maxthreads = 5 # Threads count for downloads
 sema = threading.Semaphore(value=maxthreads)
 label = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") # Customized label using date time
