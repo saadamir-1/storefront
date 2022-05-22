@@ -3,8 +3,8 @@ from PIL import Image
 import numpy as np
 
 def comparison(year_one, year_two, region):
-    first = imread('/home/saad/django_projects/playground/inference_results/' + region + '_' + year_one +'_inferred_map.png')
-    second = imread('/home/saad/django_projects/playground/inference_results/' + region + '_' + year_two +'_inferred_map.png')
+    first = imread('/mnt/efs/fs1/proj/storefront/playground/inference_results/' + region + '_' + year_one +'_inferred_map.png')
+    second = imread('/mnt/efs/fs1/proj/storefront/playground/inference_results/' + region + '_' + year_two +'_inferred_map.png')
 
     a, b, c = first.shape
     result = np.zeros(first.shape)
@@ -28,4 +28,4 @@ def comparison(year_one, year_two, region):
                 
     
     res_img = Image.fromarray((result * 255).astype(np.uint8))
-    res_img.save('/home/saad/django_projects/playground/inference_results/' + year_one + '_' + year_two+'_region_comparison.png')
+    res_img.save('/mnt/efs/fs1/proj/storefront/playground/inference_results/' + year_one + '_' + year_two + '_' + region + '_comparison.png')

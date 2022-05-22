@@ -19,13 +19,13 @@ from PIL import Image
 # action ( views is alse called action in some frameworks)
 class Arguments:
     def __init__(self):
-        self.data_path = '/home/saad/django_projects/'
-        self.rasterized_shapefiles_path = '/home/saad/django_projects/shapefiles' 
+        self.data_path = '/mnt/efs/fs1/proj/storefront/'
+        self.rasterized_shapefiles_path = '/mnt/efs/fs1/proj/storefront/shapefiles/' 
         self.model_topology = 'ENC_4_DEC_4' 
         self.bands = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] 
         self.classes = ['Non-Forest', 'Forest'] 
-        self.model_path = '/home/saad/Project/Data/save_dir/model_99.pt' 
-        self.dest = '/home/saad/django_projects/playground/inference_results'
+        self.model_path = '/mnt/efs/fs1/test_data/model_99.pt' 
+        self.dest = '/mnt/efs/fs1/proj/storefront/playground/inference_results/'
         self.bs = 4 
         self.cuda = 0
         self.device = 0
@@ -51,46 +51,46 @@ def run_project(request, startYear, endYear, region):
     print("\n**************************************\n")
     print("\n==> Downloading ShapeFiles")
 
-    shapeFileDownload(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709, region)
+    #shapeFileDownload(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709, region)
 
     print("\n==> Downloading Complete")
     print("\n==> Creating bounding box")
 
-    bbox1 = findBBox(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709)
+    #bbox1 = findBBox(73.1003, 34.2549, 73.3859, 34.2504, 73.4024, 34.0640, 73.0618, 34.0709)
 
     print("\n==> Bounding box created")
     print("\n==> Searching for Landsat8 Images")
 
-    image_names = searchImage(bbox1, year_our)
+    #image_names = searchImage(bbox1, year_our)
 
     print("\n==> Search completed for Landsat8 Images\n")
     count = 0
-    print(image_names) 
-    for x in image_names:
-        print("==> Editing scenes file for" + x +"\n")
-        editTxt(x)
-        run_m2m(args_downloading)
-        if count == 0:
-            stack(x, startYear, region)
-            count+=count
-        elif count == 1:
-            stack(x, endYear, region)
+    #print(image_names) 
+    #for x in image_names:
+    #    print("==> Editing scenes file for" + x +"\n")
+    #    editTxt(x)
+        #run_m2m(args_downloading)
+    #    if count == 0:
+    #        stack(x, startYear, region)
+    #        count+=count
+    #    elif count == 1:
+    #        stack(x, endYear, region)
     
     print("\n==> Converting Shapefile")
-    shpToRaster(startYear, region)
+   # shpToRaster(startYear, region)
 
     #Inference
     print("\n==> RUNNING INFERENCE")
 
-    region_our = [region]
-    inference_btt_2020.run_inference(args, year_our, region_our)
+    #region_our = [region]
+    #inference_btt_2020.run_inference(args, year_our, region_our)
     print("\n==> INFERENCE COMLETE")
 
     if startYear != endYear:
         print("\n==> RUNNING COMPARISON")
 
         comparison(startYear, endYear, region)
-        imagePath = '/home/saad/django_projects/playground/inference_results/' + startYear + '_' + endYear+'_region_comparison.png'
+        imagePath = '/mnt/efs/fs1/proj/storefront/playground/inference_results/' + startYear + '_' + endYear+'_' + region + '_comparison.png'
         try:
             with open(imagePath, "rb") as f:
                 encoded_string = base64.b64encode(f.read())
@@ -103,7 +103,7 @@ def run_project(request, startYear, endYear, region):
             red.save(response, "png")
             return response
     else:
-        imagePath = '/home/saad/django_projects/playground/inference_results/' + region + '_' + startYear +'_inferred_map.png'
+        imagePath = '/mnt/efs/fs1/proj/storefront/playground/inference_results/' + region + '_' + startYear +'_inferred_map.png'
         try:
             with open(imagePath, "rb") as f:
                 encoded_string = base64.b64encode(f.read())
