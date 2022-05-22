@@ -4,6 +4,7 @@
 from __future__ import print_function
 from __future__ import division
 import os
+import string
 import gdal
 import time
 import torch
@@ -88,7 +89,8 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             self.bands = bands
             self.num_classes = num_classes
             self.transformation = transformation
-            self.temp_dir = 'temp_numpy_saves'
+            # self.temp_dir = 'temp_numpy_saves' 
+            self.temp_dr = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(7))
             if os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             os.mkdir(self.temp_dir)
@@ -152,10 +154,10 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
         def clear_mem(self):
             # shutil.rmtree(self.temp_dir, onerror=rm_dir_readonly)
 
-            bashCommand = "sudo rm -rf /mnt/efs/fs1/proj/storefront/temp_numpy_saves"
-            process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-            output, error = process.communicate()
-            print(output)
+            # bashCommand = "sudo rm -rf /mnt/efs/fs1/proj/storefront/temp_numpy_saves"
+            # process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+            # output, error = process.communicate()
+            # print(output)
 
             print('Log: Temporary memory cleared')
 
