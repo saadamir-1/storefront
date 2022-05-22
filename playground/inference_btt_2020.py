@@ -90,7 +90,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             self.num_classes = num_classes
             self.transformation = transformation
             # self.temp_dir = 'temp_numpy_saves' 
-            self.temp_dr = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(7))
+            self.temp_dir = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(7))
             if os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             os.mkdir(self.temp_dir)
