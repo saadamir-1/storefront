@@ -7,7 +7,7 @@ from playground.stack import stack
 
 def clip_landsat(nameLandsat, region):
 
-    inputPath = '/mnt/efs/fs1/proj/storefront/'
+    inputPath = '/mnt/efs/fs1/proj/storefront/downloaded_image/'
     outputPath = '/mnt/efs/fs1/proj/storefront/clipped/'
     shp_clip = '/mnt/efs/fs1/proj/storefront/shapefiles/' + region + '_shapefile.shp'
 
