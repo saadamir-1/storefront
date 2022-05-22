@@ -170,7 +170,7 @@ def run_project_map(request, startYear, endYear, region, a1, a2, b1, b2, c1, c2,
            print("\n==> stacking clipped landsat")
            stack(x, data_path, image_name)
            print("\n==> clipped landsat stacked")
-           count+=count
+           count=1
        elif count == 1:
            data_path = "/mnt/efs/fs1/proj/storefront/downloaded_image/"
            image_name = 'landsat8_' + str(endYear) + '_region_' + region + '.tif'

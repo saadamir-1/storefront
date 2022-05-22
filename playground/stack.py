@@ -40,8 +40,6 @@ def stack(nameLandsat, data_path, image_name):
     meta.update(count = len(file_list))
 
     # # Read each layer and write it to stack
-    print(data_path)
-    print('\n' + image_name)
     with rasterio.open(image_name, 'w', **meta) as dst:
         for id, layer in enumerate(file_list, start=1):
             # with rasterio.open(os.path.join(settings.BASE_DIR, layer)) as src1:
