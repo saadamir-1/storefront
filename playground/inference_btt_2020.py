@@ -22,6 +22,7 @@ import pickle as pkl
 from playground.loss import FocalLoss2d
 from playground.model import UNet
 import PIL.Image as Im
+import stat
 
 
 FOREST_LABEL, NON_FOREST_LABEL, NULL_LABEL = 1, 2, 0
@@ -34,7 +35,10 @@ def adaptive_resize(array, new_shape):
     single_band_resized = single_band.resize(new_shape, Im.NEAREST)
     return np.asarray(single_band_resized)
 
-
+def rm_dir_readonly(func, path, _):
+    "Clear the readonly bit and reattempt the removal"
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 def mask_landsat8_image_using_rasterized_shapefile(rasterized_shapefiles_path, district, this_landsat8_bands_list):
     this_shapefile_path = os.path.join(rasterized_shapefiles_path, "{}_shapefile.tif".format(district))
@@ -145,7 +149,7 @@ def get_inference_loader(rasterized_shapefiles_path, district, image_path, model
             return self.shape
 
         def clear_mem(self):
-            shutil.rmtree(self.temp_dir)
+            shutil.rmtree(self.temp_dir, onerror=rm_dir_readonly)
             print('Log: Temporary memory cleared')
 
     ######################################################################################
