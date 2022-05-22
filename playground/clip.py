@@ -1,7 +1,7 @@
 from osgeo import gdal
 import os
-from convert import shpToRaster
-from inference_btt_2020 import run_inference
+from playground.convert import shpToRaster
+from playground.inference_btt_2020 import run_inference
 
 from stack import stack
 
